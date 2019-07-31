@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path
+from app.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -22,5 +24,7 @@ urlpatterns = [
     # app/ -> Genetelella UI and resources
     url(r'^app/', include('app.urls')),
     url(r'^', include('app.urls')),
+
+    path('devices/',  devices, name='devices'),
 
 ]
