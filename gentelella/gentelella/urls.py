@@ -26,5 +26,10 @@ urlpatterns = [
     url(r'^', include('app.urls')),
 
     path('devices/',  devices, name='devices'),
+    path('devices/service',  device_services, name='device_service'),
+    path('device/detail/<device_id>', device_detail, name='device_detail'),
 
+
+    path('api/v1/result', result, name='result'),
+    
 ]

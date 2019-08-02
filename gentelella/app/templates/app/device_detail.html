@@ -1,0 +1,245 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Invoice {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Device Basic Info. <small>Some examples to get you started</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Device Detail <small>Sample user invoice design</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+              <section class="content invoice">
+                <!-- title row -->
+                <div class="row">
+                  <div class="col-xs-12 invoice-header">
+                    <h1>
+                                    <i class="fa fa-globe"></i> {{device_info.name}}
+                                    <small class="pull-right">Date: 16/08/2016</small>
+                                </h1>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- info row -->
+                <div class="row invoice-info">
+
+                  <div class="col-sm-4 invoice-col">
+                    <br>
+                    <br>
+                    <b>Device ID:</b> {{device_info.id}}}
+                    <br>
+                    <br>
+                    <b>Name:</b> {{device_info.name}}
+                    <br>
+                    <br>
+                    <b>Labels:</b> {{device_info.labels}}
+                    <br>
+                    <br>
+
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+
+
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                  <div class="col-xs-12">
+                    <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                    <button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>
+                    <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Commands <small>Custom design</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th class="column-title">Command Name </th>
+                      <th class="column-title">Invoice Date </th>
+                      <th class="column-title">Order </th>
+                      <th class="column-title">Reading Values </th>
+                      <th class="column-title">Status </th>
+                      <th class="column-title">Amount </th>
+                      <th class="column-title no-link last"><span class="nobr">Action</span>
+                      </th>
+                      <th class="bulk-actions" colspan="7">
+                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    
+                    {% for n in device_cmd_list %}
+                      {% if forloop.counter|divisibleby:"2" %}
+                        <tr class="even pointer">
+                          <td class=" ">{{n.name}}</td>
+                          <td class=" ">{{n.name}}</td>
+                          <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
+                          <td class=" ">John Blank L</td>
+                          <td class=" ">Paid</td>
+                          <td class="a-right a-right ">$7.45</td>
+                          <td class=" last"><button id="btnOK" type="button" class="btn btn-round btn-default">Send</button>View</a>
+                          </td>
+                        </tr>
+                      {% else %}
+                        <tr class="odd pointer">
+                          <td class=" ">{{n.name}}</td>
+                          <td class=" ">{{n.name}}</td>
+                          <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
+                          </td>
+                          <td class=" "><div id="device_values"></div></td>
+                          <td class=" ">Paid</td>
+                          <td class="a-right a-right ">$741.20</td>
+                          <td class=" last"><button id= "execute" type="button" class="btn btn-round btn-default">Send</button></a>
+                          </td>
+                        </tr>                          
+                      {% endif %}
+                    {% endfor %}
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+    </div>
+    <!--
+    <p>time : <span id="time"></span></p>
+    <input type="button" id="execute" value="execute" />
+    -->
+  </div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script>
+    $('#execute').click(function(){
+      $.ajax({
+        url:'/api/v1/result',
+
+        success:function(data){
+          var str = '';
+          for(var name in data){
+            str += '<li>'+name +'  :  '+ data[name]+'</li>';
+          }    
+          $('#device_values').html('<ul>'+str+'</ul>');      
+        },
+        error:function(e){  
+          alert(e.responseText);  
+        }
+      })
+    })
+
+
+
+    $("#btnOK").click(function(){  
+      var url="/api/v1/result";  
+
+      $.ajax({      
+          type:"GET",  
+          url:url,      
+          data:{Name:'ajax',
+                Age: '12'
+          },      
+          success:function(args){  
+              alert("Hell") 
+              $("#result").html('hello');      
+          },   
+          beforeSend:showRequest,  
+          error:function(e){  
+              alert("Hell")
+              alert(e.responseText);  
+          }  
+      });   
+
+    });
+  
+  </script>
+
+{% endblock javascripts %}
