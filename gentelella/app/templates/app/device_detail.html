@@ -154,8 +154,8 @@
                           <td class=" ">John Blank L</td>
                           <td class=" ">Paid</td>
                           <td class="a-right a-right ">$7.45</td>
-                          <td class=" last"><button id="btnOK" type="button" class="btn btn-round btn-default">Send</button>View</a>
-                          </td>
+                          <td class=" last"><button id="execute" type="button" class="btn btn-round btn-default btn_get" data-resource={{n.id}}>Send</button>View</a>
+                          </td> 
                         </tr>
                       {% else %}
                         <tr class="odd pointer">
@@ -166,7 +166,7 @@
                           <td class=" "><div id="device_values"></div></td>
                           <td class=" ">Paid</td>
                           <td class="a-right a-right ">$741.20</td>
-                          <td class=" last"><button id= "execute" type="button" class="btn btn-round btn-default">Send</button></a>
+                          <td class=" last"><button id= "execute" type="button" class="btn btn-round btn-default btn_get" data-resource={{n.id}}>Send</button></a>
                           </td>
                         </tr>                          
                       {% endif %}
@@ -199,9 +199,13 @@
   {{ block.super }}
 
   <script>
-    $('#execute').click(function(){
+    $('.btn_get').click(function(){
       $.ajax({
         url:'/api/v1/result',
+        data: {hi:'hello', // url뒤에 data가 추가된다. api/v1/result?hi=hello 형식으로 장고 서버에 보내진다.
+              device_id:"{{device_info.id}}", 
+              command_id: $(this).attr('data-resource') // command id가 명시되어있다.     
+        }, 
 
         success:function(data){
           var str = '';
@@ -215,30 +219,6 @@
         }
       })
     })
-
-
-
-    $("#btnOK").click(function(){  
-      var url="/api/v1/result";  
-
-      $.ajax({      
-          type:"GET",  
-          url:url,      
-          data:{Name:'ajax',
-                Age: '12'
-          },      
-          success:function(args){  
-              alert("Hell") 
-              $("#result").html('hello');      
-          },   
-          beforeSend:showRequest,  
-          error:function(e){  
-              alert("Hell")
-              alert(e.responseText);  
-          }  
-      });   
-
-    });
   
   </script>
 

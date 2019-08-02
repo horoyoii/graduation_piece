@@ -12,19 +12,26 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+
+'''
+'''
 def result(request):
-    URL = 'http://115.145.227.65:48082/api/v1/device/6711cca9-c343-4d52-ba86-10e73e3cab28/command/03d15d83-cbbf-41c0-9fe3-609f92d81283'
+    
+    ### Parse the params for sending request to EdgeX 
+    device_id = request.GET.get('device_id', None)
+    command_id = request.GET.get('command_id', None)
+    URL = 'http://115.145.227.65:48082/api/v1/device/'+device_id+'/command/'+command_id
+    
+    ### Request to EdgeX 
     response = requests.get(URL)
     res = json.loads(response.text)
-    print(res['readings'])
-
     ret_json= {}
     for n in res['readings']:
         ret_json[n['name']] = n['value']
         print(n['name'])
         print(n['value'])
 
-    print(ret_json)
+    ### Response to Browser via ajax 
     return JsonResponse(ret_json)
 
 
@@ -41,13 +48,8 @@ def devices(request):
         device_info['name'] = dev['name']
         device_info['os'] = dev['operatingState']
         device_info['labels'] = dev['labels']
-        #device_info['labels'] = dev['']
- 
         device_list.append(copy.deepcopy(device_info))
        
-    for v in device_list:
-        print(v)   
-
     return render(request, 'app/device.html', {'form': "hello world", 'devices':device_list})
 
 
