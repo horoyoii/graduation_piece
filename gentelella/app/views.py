@@ -5,6 +5,7 @@ import requests
 import json
 import copy
 
+from django.core.cache import cache
 
 def index(request):
     context = {}
@@ -12,15 +13,29 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+def gateways(request):
+    gateway = request.GET.get('gateway', None)
+    if gateway != None:
+        ### Test for redis
+        cache.set("gateway1", gateway, timeout=None)
+        print("cahced is set.....")
+        print(gateway)
+    else:
+        print("none")
+    
+    return render(request, 'app/gateways.html', {'form': "hello world"})
+
+
 
 '''
 '''
 def result(request):
     
-    ### Parse the params for sending request to EdgeX 
+    ### Parse the params for sending request to EdgeX
+    gateway = cache.get("gateway1") 
     device_id = request.GET.get('device_id', None)
     command_id = request.GET.get('command_id', None)
-    URL = 'http://115.145.227.65:48082/api/v1/device/'+device_id+'/command/'+command_id
+    URL = 'http://'+geteway+':48082/api/v1/device/'+device_id+'/command/'+command_id
     
     ### Request to EdgeX 
     response = requests.get(URL)
@@ -31,12 +46,17 @@ def result(request):
         print(n['name'])
         print(n['value'])
 
+
     ### Response to Browser via ajax 
     return JsonResponse(ret_json)
 
 
+
+
 def devices(request):
-    URL = 'http://115.145.227.65:48082/api/v1/device'
+    
+    gateway = cache.get("gateway1")
+    URL = 'http://'+gateway+':48082/api/v1/device'
     response = requests.get(URL) 
     print(response.status_code) 
     res = json.loads(response.text) # type : list
@@ -55,7 +75,9 @@ def devices(request):
 
 
 def device_services(request):
-    URL = 'http://115.145.227.65:48081/api/v1/deviceservice'
+
+    gateway = cache.get("gateway1")
+    URL = 'http://'+gateway+':48081/api/v1/deviceservice'
     response = requests.get(URL) 
     res = json.loads(response.text) # type : list
     
@@ -75,7 +97,8 @@ def device_services(request):
 
 
 def device_detail(request, device_id):
-    URL = 'http://115.145.227.65:48082/api/v1/device/'+device_id
+    gateway = cache.get("gateway1")
+    URL = 'http://'+gateway+':48082/api/v1/device/'+device_id
 
     response = requests.get(URL) 
     res = json.loads(response.text) # type : list
