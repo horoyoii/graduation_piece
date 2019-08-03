@@ -148,28 +148,19 @@
                     {% for n in device_cmd_list %}
                       {% if forloop.counter|divisibleby:"2" %}
                         <tr class="even pointer">
-                          <td class=" ">{{n.name}}</td>
-                          <td class=" ">{{n.name}}</td>
-                          <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                          <td class=" ">John Blank L</td>
-                          <td class=" ">Paid</td>
-                          <td class="a-right a-right ">$7.45</td>
-                          <td class=" last"><button id="execute" type="button" class="btn btn-round btn-default btn_get" data-resource={{n.id}}>Send</button>View</a>
-                          </td> 
-                        </tr>
                       {% else %}
                         <tr class="odd pointer">
+                      {% endif %}
                           <td class=" ">{{n.name}}</td>
                           <td class=" ">{{n.name}}</td>
                           <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
                           </td>
-                          <td class=" "><div id="device_values"></div></td>
+                          <td class=" "><div id={{n.name}}></div></td>
                           <td class=" ">Paid</td>
                           <td class="a-right a-right ">$741.20</td>
-                          <td class=" last"><button id= "execute" type="button" class="btn btn-round btn-default btn_get" data-resource={{n.id}}>Send</button></a>
+                          <td class=" last"><button id= "execute" type="button" class="btn btn-round btn-default btn_get" cmd_name={{n.name}} data-resource={{n.id}}>Send</button></a>
                           </td>
                         </tr>                          
-                      {% endif %}
                     {% endfor %}
     
                   </tbody>
@@ -185,10 +176,6 @@
 
       </div>
     </div>
-    <!--
-    <p>time : <span id="time"></span></p>
-    <input type="button" id="execute" value="execute" />
-    -->
   </div>
 
 
@@ -200,19 +187,20 @@
 
   <script>
     $('.btn_get').click(function(){
+      var cmd_name = '#'+$(this).attr('cmd_name'); // div id = cmd_name
+
       $.ajax({
         url:'/api/v1/result',
         data: {hi:'hello', // url뒤에 data가 추가된다. api/v1/result?hi=hello 형식으로 장고 서버에 보내진다.
               device_id:"{{device_info.id}}", 
               command_id: $(this).attr('data-resource') // command id가 명시되어있다.     
         }, 
-
         success:function(data){
           var str = '';
           for(var name in data){
             str += '<li>'+name +'  :  '+ data[name]+'</li>';
           }    
-          $('#device_values').html('<ul>'+str+'</ul>');      
+          $(cmd_name).html('<ul>'+str+'</ul>');      
         },
         error:function(e){  
           alert(e.responseText);  

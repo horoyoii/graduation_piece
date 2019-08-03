@@ -35,7 +35,7 @@ def result(request):
     gateway = cache.get("gateway1") 
     device_id = request.GET.get('device_id', None)
     command_id = request.GET.get('command_id', None)
-    URL = 'http://'+geteway+':48082/api/v1/device/'+device_id+'/command/'+command_id
+    URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id
     
     ### Request to EdgeX 
     response = requests.get(URL)
@@ -49,6 +49,8 @@ def result(request):
 
     ### Response to Browser via ajax 
     return JsonResponse(ret_json)
+
+
 
 
 
