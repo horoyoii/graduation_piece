@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from app.views import *
 
+from rest_framework.urlpatterns import format_suffix_patterns
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
@@ -32,6 +34,7 @@ urlpatterns = [
     path('device/detail/<device_id>', device_detail, name='device_detail'),
 
 
-    path('api/v1/result', result, name='result'),
-
+    path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

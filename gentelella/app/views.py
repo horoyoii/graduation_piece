@@ -7,6 +7,12 @@ import copy
 
 from django.core.cache import cache
 
+# DRF
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
+
 def index(request):
     context = {}
     template = loader.get_template('app/index.html')
@@ -27,31 +33,55 @@ def gateways(request):
 
 
 
+
+
 '''
 '''
-def result(request):
-    
-    ### Parse the params for sending request to EdgeX
-    gateway = cache.get("gateway1") 
-    device_id = request.GET.get('device_id', None)
-    command_id = request.GET.get('command_id', None)
-    URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id
-    
-    ### Request to EdgeX 
-    response = requests.get(URL)
-    res = json.loads(response.text)
-    ret_json= {}
-    for n in res['readings']:
-        ret_json[n['name']] = n['value']
-        print(n['name'])
-        print(n['value'])
+class DeviceCommandAgency(APIView):
+
+    def get(self, request, format=None):
+
+        ### Parse the params for sending request to EdgeX
+        gateway = cache.get("gateway1") 
+        device_id = request.query_params.get('device_id', None)
+        command_id = request.query_params.get('command_id', None)
+        URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id
+        
+        ### Request to EdgeX 
+        response = requests.get(URL)
+        res = json.loads(response.text)
+        ret_json= {}
+        for n in res['readings']:
+            ret_json[n['name']] = n['value']
+
+        ### Response to Browser via ajax 
+        return JsonResponse(ret_json)
+
+    def post(self, request, format=None):
+
+        ### Parse the params for sending request to EdgeX
+        gateway = cache.get("gateway1") 
+        device_id = request.data['device_id']
+        command_id = request.data['command_id']
+        URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id        
+
+        ### Parse Parameters
+        body = request.data['body']
+        print("OK I got;;;;")
+        print(body)
+
+        ### Request(PUT) to EdgeX 
+        headers = {'Content-Type': 'application/json'} 
+        raw_data = body
+        response = requests.put(URL, headers=headers, json=raw_data)
+        
+        if response.status_code == 200:
+            return Response()        
+        else:
+            return Response()
 
 
-    ### Response to Browser via ajax 
-    return JsonResponse(ret_json)
-
-
-
+        return Response()        
 
 
 
@@ -119,6 +149,7 @@ def device_detail(request, device_id):
     for dev in cmd_list:
         device_command_info['id'] = dev['id'] 
         device_command_info['name'] = dev['name']
+        device_command_info['params'] = dev['put']['parameterNames']
         device_command_list.append(copy.deepcopy(device_command_info))
     print(device_command_list)
 
