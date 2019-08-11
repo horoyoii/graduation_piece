@@ -32,6 +32,8 @@ urlpatterns = [
     path('devices/',  devices, name='devices'),
     path('devices/service',  device_services, name='device_service'),
     path('device/detail/<device_id>', device_detail, name='device_detail'),
+    path('device/register', device_register, name='device_register'),
+   
 
 
     path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),

@@ -154,9 +154,9 @@
                                 <br>
                               {% endfor %}
                             </td>
-                            <td class=" ">
+                            <td class=" " id= "{{n.name}}_result"> 
                             </td>
-                            <td class=" ">Paid</td>
+                            <td class=" "></td>
                             <td class="a-right a-right ">GET</td>
                             <td class=" last"><button type="button" class="btn btn-round btn-default btn_get" cmd_name={{n.name}} data-resource={{n.id}}>Send</button></a>
                             </td>
@@ -175,7 +175,7 @@
                               <input type="text" id="{{p}}_input" placeholder="{{p}}" class="form-control">                            
                             {% endfor %}
                           </td>
-                          <td class=" ">Paid</td>
+                          <td class=" "></td>
                           <td class="a-right a-right ">SET</td>
                           <td class=" last"><button type="button" class="btn btn-round btn-default btn_set" cmd_name={{n.name}} data-resource={{n.id}}>Send</button></a>
                           </td>
@@ -211,16 +211,12 @@
  
       $.ajax({
         url:'/api/v1/result',
-        data: {hi:'hello', // url뒤에 data가 추가된다. api/v1/result?hi=hello 형식으로 장고 서버에 보내진다.
+        data: { // url뒤에 data가 추가된다. api/v1/result?hi=hello 형식으로 장고 서버에 보내진다.
               device_id:"{{device_info.id}}", 
               command_id: $(this).attr('data-resource') // command id가 명시되어있다.     
         }, 
         success:function(data){
-          var str = '';
-          for(var name in data){
-            str += '<li>'+name +'  :  '+ data[name]+'</li>';
-          }    
-          $(cmd_name).html('<ul>'+str+'</ul>');      
+          alert("Ok success");
         },
         error:function(e){  
           alert(e.responseText);  
@@ -239,7 +235,6 @@
       // make json for request body...
       for (let item of params_list) { // item is htmllielement type
         var id = item.textContent+"_input";
-        alert(document.getElementById(id).value);
         params[item.textContent] = document.getElementById(id).value;
       }
       var params_str = JSON.stringify(params)

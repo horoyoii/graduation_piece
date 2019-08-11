@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
+from .forms import *
 
 def index(request):
     context = {}
@@ -74,6 +75,7 @@ class DeviceCommandAgency(APIView):
         headers = {'Content-Type': 'application/json'} 
         raw_data = body
         response = requests.put(URL, headers=headers, json=raw_data)
+        #TODO: Parsing Failed in EdgeX in this way 
         
         if response.status_code == 200:
             return Response()        
@@ -154,6 +156,16 @@ def device_detail(request, device_id):
     print(device_command_list)
 
     return render(request, 'app/device_detail.html', {'device_info':device_info, 'device_cmd_list':device_command_list})
+
+
+def device_register(request):
+    if request.method == 'POST':
+        rs = request.POST.copy()
+        print(rs)
+        print(rs.get('first-name'))
+
+
+    return render(request, 'app/device_register_form.html')
 
 
 
