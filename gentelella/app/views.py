@@ -11,8 +11,13 @@ from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
-
+from django.views.decorators.csrf import csrf_exempt
 from .forms import *
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
+import channels.layers
+
 
 def index(request):
     context = {}
@@ -32,7 +37,34 @@ def gateways(request):
     
     return render(request, 'app/gateways.html', {'form': "hello world"})
 
+@csrf_exempt
+def export_get_data(request):
+    print("export called")
+    if request.method == "POST":
+        print("POST accepted")
+        print(request.body)
+        print("==============================")
 
+        body = json.loads(request.body)
+        content = body['data']
+        print("con is ", content)
+        
+        channel_layer = channels.layers.get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            "chat",
+            {
+            'type': 'chat_message',
+                'message': content +" __ from server!!"
+            }
+        )
+
+    return render(request, 'app/gateways.html', {'form': "hello world"})
+
+
+
+def device_logs(request):
+    return render(request, 'app/logs.html')
 
 
 

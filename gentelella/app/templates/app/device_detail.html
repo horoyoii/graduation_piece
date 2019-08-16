@@ -216,7 +216,12 @@
               command_id: $(this).attr('data-resource') // command id가 명시되어있다.     
         }, 
         success:function(data){
-          alert("Ok success");
+          //alert("Ok success");
+          var str = '';
+          for(var name in data){
+            str += '<li>'+name +'  :  '+ data[name]+'</li>';
+          }    
+          $(cmd_name).html('<ul>'+str+'</ul>'); 
         },
         error:function(e){  
           alert(e.responseText);  
