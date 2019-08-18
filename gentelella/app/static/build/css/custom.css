@@ -2404,7 +2404,7 @@ a.btn-danger {
 textarea {
     padding: 10px;
     vertical-align: top;
-    width: 200px
+    /*width: 200px*/
 }
 textarea:focus {
     outline-style: solid;

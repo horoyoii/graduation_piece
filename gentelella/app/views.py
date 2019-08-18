@@ -17,6 +17,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 import channels.layers
+import datetime
 
 
 def index(request):
@@ -41,21 +42,25 @@ def gateways(request):
 def export_get_data(request):
     print("export called")
     if request.method == "POST":
-        print("POST accepted")
-        print(request.body)
+        j_data =request.body.decode('ascii')
+        dict = json.loads(j_data)
+        content = dict['id']
+        
+        dev_resource_name = dict['readings'][0]
+
+        dev_res_name = dev_resource_name['name']
+        dev_name = dev_resource_name['device']
+        dev_value = dev_resource_name['value']
         print("==============================")
 
-        body = json.loads(request.body)
-        content = body['data']
-        print("con is ", content)
-        
+        # Disconnection 되었을 때 data 전달은 어떻게 되는가...?        
         channel_layer = channels.layers.get_channel_layer()
 
         async_to_sync(channel_layer.group_send)(
             "chat",
             {
             'type': 'chat_message',
-                'message': content +" __ from server!!"
+                'message': "["+datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")+"] "+ dev_name +"    "+dev_res_name+"   "+dev_value
             }
         )
 
