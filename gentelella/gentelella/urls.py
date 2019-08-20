@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from app.views import *
 
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -38,6 +38,8 @@ urlpatterns = [
     path('export/data', export_get_data, name='get_data'),
 
     path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),
+    
+    path('registeration/', include('registeration.urls')),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
