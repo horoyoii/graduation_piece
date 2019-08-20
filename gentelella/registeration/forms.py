@@ -7,3 +7,7 @@ class ProfileFormModel(forms.ModelForm):
     class Meta:
         model = Device_profile
         fields = ['device_profile_file']
+
+
+
+    

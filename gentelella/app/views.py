@@ -105,14 +105,15 @@ class DeviceCommandAgency(APIView):
 
         ### Parse Parameters
         body = request.data['body']
-        print("OK I got;;;;")
         print(body)
+        print(type(body))
+
+
 
         ### Request(PUT) to EdgeX 
         headers = {'Content-Type': 'application/json'} 
-        raw_data = body
-        response = requests.put(URL, headers=headers, json=raw_data)
-        #TODO: Parsing Failed in EdgeX in this way 
+        response = requests.put(URL, headers=headers, data=body)
+
         
         if response.status_code == 200:
             return Response()        

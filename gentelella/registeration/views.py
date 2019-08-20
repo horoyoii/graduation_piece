@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 import requests
 from django.core.cache import cache
 import os
+import json
 # Create your views here.
 
 
@@ -45,5 +46,84 @@ def device_profile(request):
 
 
 def device_itself(request):
+    if request.method == 'POST':
+        print("POST OKKKK")
+        print(request.POST['name'])
 
-    return None
+        ### Parse the params for sending request to EdgeX
+        gateway = cache.get("gateway1") 
+        URL = 'http://'+gateway+':48081/api/v1/device'
+
+        ### Parse Parameters
+
+        body = {
+            "name": request.POST['name'],
+            "description": request.POST['Description'],
+            "adminState": request.POST['adminState'],
+            "operatingState": request.POST['operatingState'],
+            "protocols": {
+                request.POST['Protocol']:{
+                    "Address": request.POST['Address'],
+                    "Port": request.POST['Port'],
+                    "UnitID": request.POST['UnitID']
+                }
+            },
+            "service":{
+                "name": request.POST['Device_Service'],
+                "adminState":"unlocked",
+                "operatingState":"enabled",
+                "addressable":{
+                    "name": request.POST['Device_Service']
+                }
+            },
+            "profile":{
+                "name": request.POST['Device_Profile']
+            }
+        }
+
+        boddy = { 
+            "name" :"Modbus-TCP-Device-After-5", 
+            "description":"Modbus Simulating", 
+            "adminState":"UNLOCKED", 
+            "operatingState":"ENABLED", 
+            "protocols": { 
+                    "modbus-tcp":{
+                        "Address":"115.145.241.5", 
+                        "Port":"502", 
+                        "UnitID":"1" 
+                    } 
+            }, 
+            "service":{ 
+                "name":"edgex-device-modbus", 
+                "adminState": "unlocked", 
+                "operatingState": "enabled", 
+                "addressable": { 
+                    "name": "edgex-device-modbus" 
+                } 
+            }, 
+            "profile":{ 
+                "name":"Network Power Meter" 
+            } 
+        }
+
+
+        json_body = json.dumps(boddy)
+
+        print(json_body)
+
+        ### Request(PUT) to EdgeX 
+        headers = {'Content-Type': 'application/json'} 
+        response = requests.put(URL, headers=headers, data=json_body)
+
+
+        
+        if response.status_code == 200:
+            return HttpResponseRedirect('/registeration/device')        
+        else:
+            return HttpResponseRedirect('/registeration/device')
+
+
+
+    else:
+        print("OKKKK")
+    return render(request, 'device_upload.html')
