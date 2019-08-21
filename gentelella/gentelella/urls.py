@@ -34,7 +34,8 @@ urlpatterns = [
     path('device/detail/<device_id>', device_detail, name='device_detail'),
     path('device/register', device_register, name='device_register'),
     path('devices/logs', device_logs, name='device_logs'),
-   
+    path('devices/profile', device_profile, name='device_profile'),
+
     path('export/data', export_get_data, name='get_data'),
 
     path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),

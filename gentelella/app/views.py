@@ -73,6 +73,35 @@ def device_logs(request):
 
 
 
+def device_profile(request):
+
+    ### Make URL for EdgeX connection
+    gateway = cache.get("gateway1")
+    URL = 'http://'+gateway+':48081/api/v1/deviceprofile'
+
+    ### Request to EdgeX 
+    response = requests.get(URL) 
+    print(response.status_code) 
+    res = json.loads(response.text) # type : list
+    
+    ### Parse Profile Info & Pass to Front 
+    device_profile_list =[]
+    device_profile_info = {}
+    for dev in res:
+        device_profile_info['id'] = dev['id'] 
+        device_profile_info['name'] = dev['name']
+        device_profile_info['model'] = dev['model']
+        device_profile_info['manufacturer'] = dev['manufacturer']
+        device_profile_info['labels'] = dev['labels']
+        device_profile_info['description'] = dev['description']
+        device_profile_list.append(copy.deepcopy(device_profile_info))
+
+    print(device_profile_list)
+
+    return render(request, 'app/device_profile.html', {'device_profile_list':device_profile_list})
+
+
+
 '''
 '''
 class DeviceCommandAgency(APIView):
@@ -164,7 +193,7 @@ def device_services(request):
  
         device_service_list.append(copy.deepcopy(device_service_info))
        
-    return render(request, 'app/device_service.html', {'form': "hello world", 'devices':device_service_list})
+    return render(request, 'app/device_service.html', {'devices':device_service_list})
 
 
 
