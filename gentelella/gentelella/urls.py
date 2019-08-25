@@ -39,6 +39,7 @@ urlpatterns = [
     path('export/data', export_get_data, name='get_data'),
 
     path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),
+    path('api/v1/gateway', set_gateway, name='gateway_set'),
     
     path('registeration/', include('registeration.urls')),
 ]

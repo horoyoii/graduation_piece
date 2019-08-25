@@ -8,6 +8,30 @@ import json
 # Create your views here.
 
 
+def gateway(request):
+
+    gateway = request.GET.get('gateway', None)
+
+    ### Get All registered gateway info In redis
+    print(cache.keys("gateway*"))
+
+    ### Register New Gateway info in Redis
+    if gateway != None:
+        gt_num = cache.get("num")
+        if gt_num == None:
+            gt_num = 0 
+
+        gt_num = gt_num + 1
+        cache.set("gateway_"+str(gt_num), gateway, timeout=None)
+        cache.set("num", gt_num, timeout=None)
+        
+    else:
+        print("none")
+    
+    return render(request, 'gateways.html')
+
+
+
 def device_profile(request):
     if request.method == 'POST':
         form = ProfileFormModel(request.POST, request.FILES)
@@ -26,7 +50,7 @@ def device_profile(request):
 
 
             ### Sent the file to EdgeX
-            gateway = cache.get("gateway1") 
+            gateway = cache.get(cache.get("cur_gateway"))
             URL = 'http://'+gateway+':48081/api/v1/deviceprofile/uploadfile'
             #print(URL)
 
@@ -51,7 +75,7 @@ def device_itself(request):
         print(request.POST['name'])
 
         ### Parse the params for sending request to EdgeX
-        gateway = cache.get("gateway1") 
+        gateway = cache.get(cache.get("cur_gateway")) 
         URL = 'http://'+gateway+':48081/api/v1/device'
 
         ### Parse Parameters

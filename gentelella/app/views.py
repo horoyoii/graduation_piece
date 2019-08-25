@@ -26,17 +26,44 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+
+### Show all Gateway from Redis 
 def gateways(request):
+
     gateway = request.GET.get('gateway', None)
+
+    ### Get All registered gateway info In redis
+    gt_list = cache.keys("gateway*")
+    gt_dic = {}
+
+    for key in gt_list:
+        gt_dic[key] = cache.get(key)
+
+    ### Register New Gateway info in Redis
     if gateway != None:
-        ### Test for redis
-        cache.set("gateway1", gateway, timeout=None)
-        print("cahced is set.....")
-        print(gateway)
+        gt_num = cache.get("num")
+        if gt_num == None:
+            gt_num = 0 
+
+        gt_num = gt_num + 1
+        cache.set("gateway_"+str(gt_num), gateway, timeout=None)
+        cache.set("num", gt_num, timeout=None)
+        
     else:
         print("none")
     
-    return render(request, 'app/gateways.html', {'form': "hello world"})
+    return render(request, 'app/gateways.html', {'gt_dic':gt_dic})
+
+
+### Set Current Gateway
+def set_gateway(request):
+
+    cache.set("cur_gateway", request.GET.get('gt_name', None), timeout=None)
+
+    return HttpResponse(status=200)   
+
+
+
 
 @csrf_exempt
 def export_get_data(request):
@@ -76,7 +103,7 @@ def device_logs(request):
 def device_profile(request):
 
     ### Make URL for EdgeX connection
-    gateway = cache.get("gateway1")
+    gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48081/api/v1/deviceprofile'
 
     ### Request to EdgeX 
@@ -109,7 +136,7 @@ class DeviceCommandAgency(APIView):
     def get(self, request, format=None):
 
         ### Parse the params for sending request to EdgeX
-        gateway = cache.get("gateway1") 
+        gateway = cache.get(cache.get("cur_gateway"))
         device_id = request.query_params.get('device_id', None)
         command_id = request.query_params.get('command_id', None)
         URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id
@@ -127,7 +154,7 @@ class DeviceCommandAgency(APIView):
     def post(self, request, format=None):
 
         ### Parse the params for sending request to EdgeX
-        gateway = cache.get("gateway1") 
+        gateway = cache.get(cache.get("cur_gateway"))
         device_id = request.data['device_id']
         command_id = request.data['command_id']
         URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id        
@@ -150,26 +177,28 @@ class DeviceCommandAgency(APIView):
             return Response()
 
 
-        return Response()        
+        return HttpResponse(status=200)    
 
 
 
 def devices(request):
     
-    gateway = cache.get("gateway1")
+    gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48082/api/v1/device'
     response = requests.get(URL) 
     print(response.status_code) 
     res = json.loads(response.text) # type : list
-    
+
     device_list =[]
-    device_info = {}
-    for dev in res:
-        device_info['id'] = dev['id'] 
-        device_info['name'] = dev['name']
-        device_info['os'] = dev['operatingState']
-        device_info['labels'] = dev['labels']
-        device_list.append(copy.deepcopy(device_info))
+    device_info = {}    
+
+    if res != None:
+        for dev in res:
+            device_info['id'] = dev['id'] 
+            device_info['name'] = dev['name']
+            device_info['os'] = dev['operatingState']
+            device_info['labels'] = dev['labels']
+            device_list.append(copy.deepcopy(device_info))
        
     return render(request, 'app/device.html', {'form': "hello world", 'devices':device_list})
 
@@ -177,7 +206,7 @@ def devices(request):
 
 def device_services(request):
 
-    gateway = cache.get("gateway1")
+    gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48081/api/v1/deviceservice'
     response = requests.get(URL) 
     res = json.loads(response.text) # type : list
@@ -198,7 +227,7 @@ def device_services(request):
 
 
 def device_detail(request, device_id):
-    gateway = cache.get("gateway1")
+    gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48082/api/v1/device/'+device_id
 
     response = requests.get(URL) 
