@@ -5,6 +5,7 @@
     </div>
 
     <ul class="nav navbar-nav navbar-right">
+
       <li class="">
         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <img src="/static/images/img.jpg" alt="">John Doe
@@ -88,5 +89,23 @@
         </ul>
       </li>
     </ul>
+    <h4 id="cur_gt" color="black">Current Gateway : </h4>
   </nav>
 </div>
+
+
+<script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+<script>
+  $( document ).ready(function() {
+    $.ajax({
+        url:'/api/v1/cur_gateway',
+        type:'GET',
+        success:function(data){
+          $('#cur_gt').text("Current Gateway : "+ data);   
+        },
+        error:function(e){  
+          
+        }
+      })
+  });
+</script>

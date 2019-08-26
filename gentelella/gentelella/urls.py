@@ -42,6 +42,7 @@ urlpatterns = [
     path('api/v1/gateway', set_gateway, name='gateway_set'),
     path('api/v1/device_service', get_device_service, name='get_ds'),
     path('api/v1/device_profile', get_device_profile, name='get_pf'),
+    path('api/v1/cur_gateway', get_current_profile, name='cur_gt'),
     path('registeration/', include('registeration.urls')),
 ]
 

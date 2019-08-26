@@ -313,3 +313,8 @@ def get_device_profile(request):
     
 
     return JsonResponse(rtn_dic)
+
+
+def get_current_profile(request):
+    gateway = cache.get(cache.get("cur_gateway"))
+    return HttpResponse(gateway)

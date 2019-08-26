@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
       {% endblock meta %}
 
-      <title>Gentelella Alela! | {% block title %}{% endblock %}</title>
+      <title>Gentelella Alela!  | {% block title %}{% endblock %}</title>
 
       {% block stylesheets %}
         <!-- Bootstrap -->
@@ -38,7 +37,6 @@
     {% block body %}
       <div class="container body">
         <div class="main_container">
-
           {% block sidebar %}
             <div class="col-md-3 left_col {% block sidebar_class %} {% endblock sidebar_class %}">
               {% include "app/sidebar.html" %}
