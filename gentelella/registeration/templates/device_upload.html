@@ -77,11 +77,14 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">operatingState</label>
                   <div class="col-md-3 col-sm-3 col-xs-12">
                     <select class="form-control" name="operatingState">
+
                       <option value="ENABLED">ENABLED</option>
                       <option value="NOT_ENABLED">NOT ENABLED</option>
+                    
                     </select>
                   </div>
                 </div>
+
                 <br><br>
                 <!-- New Device Related Profile File -->
                 <div class="x_title">
@@ -92,7 +95,9 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Device Profile</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" name="Device_Profile" class="form-control col-md-7 col-xs-12">
+                      <select class="form-control" name="device_profile_list" id="device_profile_list">
+                        
+                        </select>
                   </div>
                 </div>
                 <br><br>
@@ -141,8 +146,9 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Device Service</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" name="Device_Service" class="form-control col-md-7 col-xs-12">
-                  </div>
+                      <select class="form-control" name="device_profile_list" id="device_service_list">
+                        
+                        </select>
                 </div>
 
 
@@ -171,3 +177,55 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script>
+    $(document).ready(function() { 
+      
+      // Get Device Service List 
+      $.ajax({
+        url:'/api/v1/device_service',
+        type:'GET',
+        dataType:"json",
+        success:function(data){
+
+          for(var name in data){
+            for(var i in data[name]){
+              $('<option></option>').val(data[name][i]).text(data[name][i]).appendTo('#device_service_list');
+            }
+          }         
+        },
+        error:function(e){  
+          
+        }
+      })
+
+
+
+      // Get registered Device Profile List
+      $.ajax({
+        url:'/api/v1/device_profile',
+        type:'GET',
+        dataType:"json",
+        success:function(data){
+
+          for(var name in data){
+            for(var i in data[name]){
+              $('<option></option>').val(data[name][i]).text(data[name][i]).appendTo('#device_profile_list');
+            }
+          }      
+        },
+        error:function(e){  
+          
+        }
+      })    
+    
+    });
+
+  </script>
+
+{% endblock javascripts %}
+
+

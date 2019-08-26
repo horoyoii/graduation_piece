@@ -275,3 +275,41 @@ def gentella_html(request):
     template = loader.get_template('app/' + load_template)
     return HttpResponse(template.render(context, request))
 
+
+def get_device_service(request):
+    gateway = cache.get(cache.get("cur_gateway"))
+    URL = 'http://'+gateway+':48081/api/v1/deviceservice'
+    response = requests.get(URL) 
+    res = json.loads(response.text) # type : list
+    
+    device_service_list =[]
+
+    for dev in res:
+        device_service_list.append(dev['name'])   
+    rtn_dic = {"name":device_service_list}
+    
+    return JsonResponse(rtn_dic)
+
+
+
+def get_device_profile(request):
+
+    ### Make URL for EdgeX connection
+    gateway = cache.get(cache.get("cur_gateway"))
+    URL = 'http://'+gateway+':48081/api/v1/deviceprofile'
+
+    ### Request to EdgeX 
+    response = requests.get(URL) 
+    res = json.loads(response.text)
+    
+    ### Parse Profile Info & Pass to Front 
+    device_profile_list =[]
+
+
+    for dev in res:
+        device_profile_list.append(dev['name'])   
+    
+    rtn_dic = {"name":device_profile_list}
+    
+
+    return JsonResponse(rtn_dic)
