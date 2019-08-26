@@ -105,40 +105,15 @@ def device_itself(request):
             }
         }
 
-        boddy = { 
-            "name" :"Modbus-TCP-Device-After-5", 
-            "description":"Modbus Simulating", 
-            "adminState":"UNLOCKED", 
-            "operatingState":"ENABLED", 
-            "protocols": { 
-                    "modbus-tcp":{
-                        "Address":"115.145.241.5", 
-                        "Port":"502", 
-                        "UnitID":"1" 
-                    } 
-            }, 
-            "service":{ 
-                "name":"edgex-device-modbus", 
-                "adminState": "unlocked", 
-                "operatingState": "enabled", 
-                "addressable": { 
-                    "name": "edgex-device-modbus" 
-                } 
-            }, 
-            "profile":{ 
-                "name":"Network Power Meter" 
-            } 
-        }
+        ### Make python Dic to Json format
+        json_body = json.dumps(body)
 
-
-        json_body = json.dumps(boddy)
-
-        print(json_body)
-
-        ### Request(PUT) to EdgeX 
+        ### Request(POST@@) to EdgeX 
         headers = {'Content-Type': 'application/json'} 
-        response = requests.put(URL, headers=headers, data=json_body)
+        response = requests.post(URL, headers=headers, data=json_body)
 
+        print("RESPONE:::: ",response.status_code)
+        print("RESPONE:::: ",response.content)
 
         
         if response.status_code == 200:
