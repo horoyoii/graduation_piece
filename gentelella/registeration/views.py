@@ -72,7 +72,8 @@ def device_profile(request):
 def device_itself(request):
     if request.method == 'POST':
         print("POST OKKKK")
-        print(request.POST['name'])
+        print(request.POST['device_profile_list'])
+        print(request.POST['device_service_list'])
 
         ### Parse the params for sending request to EdgeX
         gateway = cache.get(cache.get("cur_gateway")) 
@@ -93,15 +94,15 @@ def device_itself(request):
                 }
             },
             "service":{
-                "name": request.POST['Device_Service'],
+                "name": request.POST['device_service_list'],
                 "adminState":"unlocked",
                 "operatingState":"enabled",
                 "addressable":{
-                    "name": request.POST['Device_Service']
+                    "name": request.POST['device_service_list']
                 }
             },
             "profile":{
-                "name": request.POST['Device_Profile']
+                "name": request.POST['device_profile_list']
             }
         }
 
