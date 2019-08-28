@@ -1,7 +1,7 @@
 {% load tags %}
 <div class="left_col scroll-view">
   <div class="navbar nav_title" style="border: 0;">
-    <a href="index.html" class="site_title"><i class="fa fa-spinner"></i> <span>Gentelella Alela!</span></a>
+    <a href="index.html" class="site_title"><i class="fa fa-spinner"></i> <span>EdgeX UI</span></a>
   </div>
 
   <div class="clearfix"></div>
@@ -12,11 +12,7 @@
       <img src="/static/images/img.jpg" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
-      <span>Welcome,</span>
-      <h2>{{today}}</h2>
-      <div>
-          {{ today }}
-          </div>
+      <span>Welcome, {{ user.username}}</span>
     </div>
   </div>
   <!-- /menu profile quick info -->
