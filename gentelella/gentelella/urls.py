@@ -44,6 +44,7 @@ urlpatterns = [
     path('api/v1/device_profile', get_device_profile, name='get_pf'),
     path('api/v1/cur_gateway', get_current_profile, name='cur_gt'),
     path('registeration/', include('registeration.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

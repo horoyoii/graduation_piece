@@ -18,12 +18,19 @@ from channels.layers import get_channel_layer
 
 import channels.layers
 import datetime
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
 
 def index(request):
-    context = {}
-    template = loader.get_template('app/index.html')
-    return HttpResponse(template.render(context, request))
+    print("index is called")
+    if request.user.is_authenticated: # if user is not logged in 
+        context = {}
+        template = loader.get_template('app/index.html')
+        return HttpResponse(template.render(context, request))
+    else:
+        print("Login plz")
+        return redirect('/accounts/login')
 
 
 
