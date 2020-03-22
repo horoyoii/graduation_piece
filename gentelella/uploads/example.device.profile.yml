@@ -1,0 +1,93 @@
+# example.device.profile.yml
+name: "mock_device_thermometer"
+manufacturer: "Dent Instruments"
+model: "PS3037"
+description: "Check the humitidy and temperature in a room at regular intervals"
+labels:
+  - "modbus"
+deviceResources:
+    -   
+        name: "Humidity"
+        description: "Humidity of the room"
+        attributes:
+            { primaryTable: "HOLDING_REGISTERS", startingAddress: "4605" }
+        properties:
+            value:
+                { type: "UINT16", readWrite: "R", size: "1", scale: "1", minimum: "0", maximum: "65535",  defaultValue: "0"}
+            units:
+                { type: "String", readWrite: "R", defaultValue: "Hz"}
+    -   
+        name: "Temperature"
+        description: "Temperature of the room"
+        attributes:
+            { primaryTable: "HOLDING_REGISTERS", startingAddress: "4607" }
+        properties:
+            value:
+                { type: "UINT16", readWrite: "R", size: "1", scale: "1", minimum: "0", maximum: "65535",  defaultValue: "0"}
+            units:
+                { type: "String", readWrite: "R", defaultValue: "Hz"}
+deviceCommands:
+    -
+        name: "GetHumidity"
+        set:
+            - { index: "1", operation: "set", object: "Humidity", parameter: "Humidity" }
+        get:
+            - { index: "1", operation: "get", object: "Humidity", parameter:  "Humidity" }
+    -
+        name: "GetTemperature"
+        set:
+            - { index: "1", operation: "set", object: "Temperature", parameter: "Temperature"}
+        get:
+            - { index: "1", operation: "get", object: "Temperature", parameter:  "Temperature"}
+
+coreCommands:
+    -
+        name: "GetHumidity"
+        get:
+            path: "/api/v1/device/{deviceId}/GetHumidity"
+            responses:
+                -
+                    code: "200"
+                    description: "Get the Configuration"
+                    expectedValues: ["Humidity"]
+                -
+                    code: "503"
+                    description: "service unavailable"
+                    expectedValues: []
+        put:
+            path: "/api/v1/device/{deviceId}/GetHumidity"
+            parameterNames: ["Humidity"]
+            responses:
+                -
+                    code: "204"
+                    description: "Set the Configuration"
+                    expectedValues: []
+                -
+                    code: "503"
+                    description: "service ununavailable"
+                    expectedValues: []
+    -
+        name: "GetTemperature"
+        get:
+            path: "/api/v1/device/{deviceId}/GetTemperature"
+            responses:
+                -
+                    code: "200"
+                    description: "GetTemperature"
+                    expectedValues: ["Temperature"]
+                -
+                    code: "503"
+                    description: "service unavailable"
+                    expectedValues: []
+        put:
+            path: "/api/v1/device/{deviceId}/GetTemperature"
+            parameterNames: ["Temperature"]
+            responses:
+                -
+                    code: "204"
+                    description: "Set the Configuration"
+                    expectedValues: []
+                -
+                    code: "503"
+                    description: "service ununavailable"
+                    expectedValues: []

@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import *
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
+from django.views.decorators.csrf import csrf_exempt
 import channels.layers
 import datetime
 from django.contrib.auth.models import User
@@ -136,8 +136,7 @@ def device_profile(request):
 
 
 
-'''
-'''
+
 class DeviceCommandAgency(APIView):
 
     def get(self, request, format=None):
@@ -157,6 +156,7 @@ class DeviceCommandAgency(APIView):
 
         ### Response to Browser via ajax 
         return JsonResponse(ret_json)
+    
 
     def post(self, request, format=None):
 
@@ -168,22 +168,16 @@ class DeviceCommandAgency(APIView):
 
         ### Parse Parameters
         body = request.data['body']
-        print(body)
-        print(type(body))
-
-
 
         ### Request(PUT) to EdgeX 
         headers = {'Content-Type': 'application/json'} 
         response = requests.put(URL, headers=headers, data=body)
 
-        
         if response.status_code == 200:
             return Response()        
         else:
             return Response()
-
-
+            
         return HttpResponse(status=200)    
 
 

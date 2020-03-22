@@ -231,6 +231,7 @@
 
     $('.btn_set').click(function(){
       console.log("Called ");
+      
       var cmd_name = '#'+$(this).attr('cmd_name'); // div id = cmd_name
       var id = $(this).attr('cmd_name');
       var params_list = document.getElementById(id).children; // html collection type
@@ -247,6 +248,9 @@
 
 
       $.ajax({
+        beforeSend: function(request){
+          request.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+        },
         url:'/api/v1/result',
         type:'POST',
         dataType:"json",

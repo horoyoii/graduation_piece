@@ -56,8 +56,9 @@
                     <tr class="headings">
 
                       <th class="column-title">Gateway </th>
-                      <th class="column-title">Address </th>
+                      <th class="column-title">Name</th>
                       <th class="column-title">Descirption </th>
+                      <th class="column-title">Address </th>
                       <th class="column-title">Select </th>
 
                     </tr>
@@ -67,8 +68,9 @@
                     {% for k, v in gt_dic.items %}
                       <tr class="even pointer">
                         <td class=" ">{{k}}</td>
+                        <td class=" ">home-room-1</td>
+                        <td class=" ">home room</td>
                         <td class=" ">{{v}}</td>
-                        <td class=" "></td>
                         <td class=" "><button type="button" class="btn btn-default" value="{{k}}">Set</button></td>
                       </tr>
                     {% endfor %}
@@ -96,7 +98,7 @@
 
       $.ajax({
         url:'/api/v1/gateway',
-        data: { // url뒤에 data가 추가된다. api/v1/result?hi=hello 형식으로 장고 서버에 보내진다.
+        data: { 
               gt_name:$(this).attr('value')    
         }, 
         success:function(data){
