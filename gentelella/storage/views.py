@@ -70,16 +70,12 @@ def device_detail(request, device_id):
             t = datetime.fromtimestamp(
                 unixtime / 1000
             ).strftime('%Y-%m-%d %H:%M:%S')
-            print(t)
-            print(element['value'])
 
             ele = {'time':t, 'value' : element['value']}
             tmp_list.append(ele)
 
         tmp_dic['reading'] = tmp_list
         resource_data_list.append(copy.deepcopy(tmp_dic))
-        
-    print(resource_data_list)   
 
     return render(request, 'device_detail.html', {'device_info':device_info, 'resource_data':resource_data_list})
 

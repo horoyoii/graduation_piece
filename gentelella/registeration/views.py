@@ -5,6 +5,7 @@ import requests
 from django.core.cache import cache
 import os
 import json
+import copy
 # Create your views here.
 
 
@@ -71,7 +72,6 @@ def device_profile(request):
 
 def device_itself(request):
     if request.method == 'POST':
-        print("POST OKKKK")
         print(request.POST['device_profile_list'])
         print(request.POST['device_service_list'])
 
@@ -106,8 +106,25 @@ def device_itself(request):
             }
         }
 
+        ### Set autoEvent if any.
+        eventList = []
+        field_num = int(request.POST['field_num'])
+        print(field_num)
+
+        for idx in range(1, field_num+1):
+            t_dic = {}
+            t_dic["frequency"] = request.POST['time'+str(idx)]+"ms"
+            t_dic["onChange"] = False
+            t_dic["resource"] = request.POST['resource'+str(idx)]
+            eventList.append(copy.deepcopy(t_dic))
+
+        if field_num:
+            body["autoEvents"] = eventList
+
+
         ### Make python Dic to Json format
         json_body = json.dumps(body)
+        print(json_body)
 
         ### Request(POST@@) to EdgeX 
         headers = {'Content-Type': 'application/json'} 
@@ -126,4 +143,5 @@ def device_itself(request):
 
     else:
         print("OKKKK")
+    
     return render(request, 'device_upload.html')

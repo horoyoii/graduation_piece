@@ -80,7 +80,7 @@
 
                       <option value="ENABLED">ENABLED</option>
                       <option value="NOT_ENABLED">NOT ENABLED</option>
-                    
+
                     </select>
                   </div>
                 </div>
@@ -96,13 +96,13 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Device Profile</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                       <select class="form-control" name="device_profile_list" id="device_profile_list">
-                        
-                        </select>
+                      </select>
                   </div>
                 </div>
+
+
                 <br><br>
                 <!-- New Device Addressable -->
-
                 <div class="x_title">
                   <h2>New Device Addressable <small>different form elements</small></h2>
                   <div class="clearfix"></div>
@@ -137,6 +137,7 @@
                 </div>
 
                 <br><br>
+
                  <!-- New Device Service -->
                 <div class="x_title">
                   <h2>New Device Related Service <small>different form elements</small></h2>
@@ -147,11 +148,42 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Device Service</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                       <select class="form-control" name="device_service_list" id="device_service_list">
-                        
                       </select>
+                  </div>
                 </div>
 
+                <br><br>
 
+                 <!-- AutoEvents  -->
+                <div class="x_title">
+                  <h2>Set auto events <small>different form elements</small></h2>
+                  <div class="clearfix"></div>
+                </div>   
+                <button class="btn btn-primary" type="button" id="add_button">add new field</button>
+                
+                <div id="auto-events">
+
+                  <!-- <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Resource field</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="resource1" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>     
+
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Intervals</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="time1" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div> -->
+                
+                </div>
+                
+
+                <input id="field_num" type="hidden" name="field_num" value="0" class="form-control col-md-7 col-xs-12">
+
+
+                <!-- Submit button field-->
                 <div class="ln_solid"></div>
 
                 <div class="form-group">
@@ -163,11 +195,6 @@
                 </div>
 
               </form>
-
-
-
-
-
 
             </div>
           </div>
@@ -182,6 +209,33 @@
   {{ block.super }}
 
   <script>
+    let cnt = 1;
+    
+    $("#add_button").click(function(){
+      var strings = ["Resource field", "Intervals"];
+      var names = ["resource", "time"];
+
+      $('#auto-events').append($('<div/>', {class:'x_title'}));
+      for(var i=0; i <2; i++){
+
+        var newForm = $('<div></div>');
+        newForm.attr("class", "form-group");
+        newForm.append($('<label/>', {class:'control-label col-md-3 col-sm-3 col-xs-12'}).text(strings[i]));
+
+
+        var divField = $('<div></div>');
+        divField.attr("class", "col-md-6 col-sm-6 col-xs-12"); 
+        divField.append($('<input/>', {type:'text', name: names[i]+cnt, class:'form-control col-md-7 col-xs-12'}));
+        
+        newForm.append(divField);
+        $('#auto-events').append(newForm);
+      
+      }
+
+      $('#field_num').val(cnt);
+      cnt++;
+    });
+
     $(document).ready(function() { 
       
       // Get Device Service List 
