@@ -4,6 +4,8 @@ from django.core.cache import cache
 import json
 import requests
 import copy
+from datetime import datetime
+import time
 
 # Create your views here.
 
@@ -31,7 +33,7 @@ def device_list(request):
 
 def device_detail(request, device_id):
     """
-    First 
+    First request to edgeX is for get the list of device resources.
     """
     gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48082/api/v1/device/'+device_id
@@ -46,21 +48,40 @@ def device_detail(request, device_id):
     device_info['labels'] = res['labels']
 
 
-    # URL 
     cmd_list = res['commands']
     
-    device_command_list =[]
-    device_command_info = {}
+    resource_data_list =[]
 
+    """
+    Second request to edgeX is for getting the local data 
+    """
     for dev in cmd_list:
-        device_command_info['id'] = dev['id'] 
-        device_command_info['name'] = dev['name']
-        device_command_info['params'] = dev['put']['parameterNames']
-        device_command_list.append(copy.deepcopy(device_command_info))
-        print( device_command_info['params'])
-    print(device_command_list)
+        subURL = 'http://'+gateway+':48080/api/v1/reading/name/'+dev['put']['parameterNames'][0]+'/device/'+device_info['name']+'/10'
 
-    return render(request, 'device_detail.html', {'device_info':device_info, 'device_cmd_list':device_command_list})
+        response = requests.get(subURL) 
+        res = json.loads(response.text) # type : list
+
+        tmp_dic = {'name':dev['put']['parameterNames'][0]}
+
+        tmp_list =[]
+        for element in res:             # type : dict
+            unixtime = element['created']
+
+            t = datetime.fromtimestamp(
+                unixtime / 1000
+            ).strftime('%Y-%m-%d %H:%M:%S')
+            print(t)
+            print(element['value'])
+
+            ele = {'time':t, 'value' : element['value']}
+            tmp_list.append(ele)
+
+        tmp_dic['reading'] = tmp_list
+        resource_data_list.append(copy.deepcopy(tmp_dic))
+        
+    print(resource_data_list)   
+
+    return render(request, 'device_detail.html', {'device_info':device_info, 'resource_data':resource_data_list})
 
 
     
