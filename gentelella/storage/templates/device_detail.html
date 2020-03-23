@@ -11,7 +11,9 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Device Basic Info. <small>You can manipulate the device here.</small></h3>
+          <h3>Local data in edge system</h3>
+          <h4>you can check the device and sensor data on the edge system</h4>
+          <h4>These data persist until the data can be moved “north” and then exported to Enterprise and cloud systems.</h4>
         </div>
 
         <div class="title_right">
@@ -98,10 +100,12 @@
           </div>
         </div>
 
+
+        {% for data in resource_data %}
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Commands <small>Custom design</small></h2>
+              <h2>{{data.name}} <small>stable</small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -125,14 +129,9 @@
                 <table class="table table-striped jambo_table bulk_action">
                   <thead>
                     <tr class="headings">
-                      <th class="column-title">Command Name </th>
-                      <th class="column-title">Description </th>
-                      <th class="column-title">Resources </th>
-                      <th class="column-title">Reading Values </th>
-                      <th class="column-title">Status </th>
-                      <th class="column-title">Method </th>
-                      <th class="column-title no-link last"><span class="nobr">Action</span>
-                      </th>
+                      <th class="column-title">Name </th>
+                      <th class="column-title">Value </th>
+                      <th class="column-title">Timestamp </th>
                       <th class="bulk-actions" colspan="7">
                         <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                       </th>
@@ -140,42 +139,18 @@
                   </thead>
 
                   <tbody>
-                    {% for n in device_cmd_list %}
+                    {% for n in data.reading %}
                         <tr class="even pointer">
-                            <td class=" ">{{n.name}}</td>
-                            <td class=" ">{{n.name}}</td>
-                            <td class=" ">
-                              {% for p in n.params %}
-                                <li>{{p}}</li>
-                                <br>
-                              {% endfor %}
-                            </td>
-                            <td class=" " id= "{{n.name}}_result"> 
-                            </td>
-                            <td class=" "></td>
-                            <td class="a-right a-right ">GET</td>
-                            <td class=" last"><button type="button" class="btn btn-round btn-default btn_get" cmd_name={{n.name}} data-resource={{n.id}}>Send</button></a>
-                            </td>
+                            <td class=" ">{{data.name}}</td>
+                            <td class=" ">{{n.value}}</td>
+                            <td class=" ">{{n.time}}</td>
                         </tr>   
 
-                        <tr class="odd pointer">
-                          <td class=" ">{{n.name}}</td>
-                          <td class=" ">{{n.name}}</td>
-                          <td class=" " id={{n.name}}>
-                            {% for p in n.params %}
-                              <li>{{p}}</li>
-                            {% endfor %}                            
-                          </td>
-                          <td class=" ">  
-                            {% for p in n.params %}
-                              <input type="text" id="{{p}}_input" placeholder="{{p}}" class="form-control">                            
-                            {% endfor %}
-                          </td>
-                          <td class=" "></td>
-                          <td class="a-right a-right ">SET</td>
-                          <td class=" last"><button type="button" class="btn btn-round btn-default btn_set" cmd_name={{n.name}} data-resource={{n.id}}>Send</button></a>
-                          </td>
-                        </tr>  
+                        <!-- <tr class="odd pointer">
+                          <td class=" ">{{data.name}}</td>
+                          <td class=" ">{{n.value}}</td>
+                          <td class=" ">{{n.time}}</td>
+                        </tr>   -->
                  
                     {% endfor %}
     
@@ -185,9 +160,8 @@
             </div>
           </div>
         </div>  <!--end one content-->
-
-
-
+        
+        {% endfor %}
 
       </div>
     </div>
