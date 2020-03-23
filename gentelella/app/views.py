@@ -168,16 +168,17 @@ class DeviceCommandAgency(APIView):
 
         ### Parse Parameters
         body = request.data['body']
-
+        print(body)
         ### Request(PUT) to EdgeX 
         headers = {'Content-Type': 'application/json'} 
         response = requests.put(URL, headers=headers, data=body)
+        print(response)
 
         if response.status_code == 200:
             return Response()        
         else:
             return Response()
-            
+
         return HttpResponse(status=200)    
 
 

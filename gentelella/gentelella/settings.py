@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'registeration',
+    'storage',
     'rest_framework',
     'channels',
 

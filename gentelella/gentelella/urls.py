@@ -35,7 +35,7 @@ urlpatterns = [
     path('device/register', device_register, name='device_register'),
     path('devices/logs', device_logs, name='device_logs'),
     path('devices/profile', device_profile, name='device_profile'),
-
+    
     path('export/data', export_get_data, name='get_data'),
 
     path('api/v1/result', DeviceCommandAgency.as_view(), name='result'),
@@ -43,6 +43,8 @@ urlpatterns = [
     path('api/v1/device_service', get_device_service, name='get_ds'),
     path('api/v1/device_profile', get_device_profile, name='get_pf'),
     path('api/v1/cur_gateway', get_current_profile, name='cur_gt'),
+
+    path('storage/', include('storage.urls')),
     path('registeration/', include('registeration.urls')),
     path('accounts/', include('accounts.urls')),
 ]
