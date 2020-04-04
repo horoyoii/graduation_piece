@@ -1,22 +1,17 @@
-## [Gentelella Admin Template](https://github.com/puikinsh/gentelella)
+# [Admin DashBorad For EdgeX Foundry](https://github.com/horoyoii/admin_dashboard_edgex)
 
-#### Steps
-[Optional] [Set up a virtualenv and activate](http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/) 
+## Admin Dashborad 
 
-##### Get the code
-    git clone https://github.com/GiriB/django-gentelella.git
-    cd django-gentelella
+ This web project is for managing the EdgeX's microservices via the gateway based on Django.
+ 
+## Functions 
 
-##### Install requirements 
-    pip install -r requirements.txt
+  1) Register the gateways, devices, device profile.
+  2) Get the information of devices.
+  3) Send the command to get or set the resources of devices by using of simple UI.
+  4) Real-time data streaming from EdgeX implemented by WebSocket.
+  
 
-##### Run the code
-    cd gentelella
-    python manage.py runserver 
-    
-##### Behold!
-Go to http://localhost:8000/
 
-###### Contributors 
-[@GiriB](https://github.com/GiriB)  
-[@johnnycakes79](https://github.com/johnnycakes79)
+## Demo
+![screenshot 1](https://user-images.githubusercontent.com/34915108/63831912-a4eb0600-c9aa-11e9-9ab4-addd35e70ebd.png)
