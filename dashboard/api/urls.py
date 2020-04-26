@@ -9,4 +9,5 @@ urlpatterns = [
     path('device_service', get_device_service, name='get_ds'),
     path('device_profile', get_device_profile, name='get_pf'),
     path('cur_gateway', get_current_profile, name='cur_gt'),
+    path('client', delete_client, name='delete_client')
 ]

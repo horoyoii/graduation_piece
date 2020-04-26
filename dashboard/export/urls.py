@@ -4,5 +4,5 @@ from .views import *
 app_name = 'export'
 
 urlpatterns = [
-    path('client', client_list, name='client_list'),
+    path('client', get_client_list, name='client_list'),
 ]

@@ -59,6 +59,24 @@ def get_current_profile(request):
     gateway = cache.get(cache.get("cur_gateway"))
     return HttpResponse(gateway)
 
+def delete_client(request):
+    
+    if request.method == 'DELETE':
+        print(request.body)
+        #print(request.DELETE['client_id'])
+
+        ### Make URL for EdgeX connection
+        gateway = cache.get(cache.get("cur_gateway"))
+        URL = 'http://'+gateway+':48071/api/v1/registration/id/' #+request.body['client_id']
+
+        ### Request to EdgeX 
+        response = requests.delete(URL) 
+        res = json.loads(response.text)
+        print(res)
+
+        return "bye"
+    else:
+        return "sad"
 
 
 class DeviceCommandAgency(APIView):
