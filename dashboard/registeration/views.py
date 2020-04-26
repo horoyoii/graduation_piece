@@ -10,7 +10,6 @@ from django.shortcuts import render
 from .forms import *
 
 
-
 def gateway(request):
 
     gateway = request.GET.get('gateway', None)
@@ -33,6 +32,73 @@ def gateway(request):
     
     return render(request, 'gateways.html')
 
+def client(request):
+    if request.method == 'POST':
+        print(request.POST['device_profile_list'])
+        print(request.POST['device_service_list'])
+
+        ### Parse the params for sending request to EdgeX
+        gateway = cache.get(cache.get("cur_gateway")) 
+#        URL = 'http://'+gateway+':48081/api/v1/device'
+
+        ### Parse Parameters
+
+        body = {
+            "name": request.POST['name'],
+            "description": request.POST['Description'],
+            "adminState": request.POST['adminState'],
+            "operatingState": request.POST['operatingState'],
+            "protocols": {
+                request.POST['Protocol']:{
+                    "Address": request.POST['Address'],
+                    "Port": request.POST['Port'],
+                    "UnitID": request.POST['UnitID']
+                }
+            },
+            "service":{
+                "name": request.POST['device_service_list'],
+                "adminState":"unlocked",
+                "operatingState":"enabled",
+                "addressable":{
+                    "name": request.POST['device_service_list']
+                }
+            },
+            "profile":{
+                "name": request.POST['device_profile_list']
+            }
+        }
+
+        ### Set autoEvent if any.
+        eventList = []
+        field_num = int(request.POST['field_num'])
+        print(field_num)
+
+        for idx in range(1, field_num+1):
+            t_dic = {}
+            t_dic["frequency"] = request.POST['time'+str(idx)]+"ms"
+            t_dic["onChange"] = False
+            t_dic["resource"] = request.POST['resource'+str(idx)]
+            eventList.append(copy.deepcopy(t_dic))
+
+        if field_num:
+            body["autoEvents"] = eventList
+
+
+        ### Make python Dic to Json format
+        json_body = json.dumps(body)
+        print(json_body)
+
+        ### Request(POST@@) to EdgeX 
+        headers = {'Content-Type': 'application/json'} 
+        response = requests.post(URL, headers=headers, data=json_body)
+
+        
+        if response.status_code == 200:
+            return HttpResponseRedirect('/registeration/device')        
+        else:
+            return HttpResponseRedirect('/registeration/device')
+
+    return render(request, 'client_upload.html')
 
 
 def device_profile(request):

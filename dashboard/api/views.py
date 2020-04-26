@@ -9,6 +9,29 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
+def get_device_name_list(request):
+
+    ### Make URL for EdgeX connection
+    gateway = cache.get(cache.get("cur_gateway"))
+    URL = 'http://'+gateway+':48081/api/v1/device'
+
+    ### Request to EdgeX 
+    response = requests.get(URL) 
+    res = json.loads(response.text)
+    
+    ### Parse Profile Info & Pass to Front 
+    device_profile_list =[]
+
+    for dev in res:
+        device_profile_list.append(dev['name'])   
+    
+    rtn_dic = {"name":device_profile_list}
+    print(rtn_dic)
+
+    return JsonResponse(rtn_dic)
+
+
+
 ### Set Current Gateway
 def set_gateway(request):
 

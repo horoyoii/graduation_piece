@@ -7,4 +7,5 @@ urlpatterns = [
     path('device_profile', device_profile, name='device_profile'),
     path('device', device_itself, name='device_itself'),
     path('gateway', gateway, name='gateway'),
+    path('client', client, name='client')
 ]
