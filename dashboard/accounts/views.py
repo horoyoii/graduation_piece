@@ -7,20 +7,14 @@ from django.contrib.auth import logout as auth_logout
 
 def login(request):
     if request.method == "POST":
-        print("Post", request.POST.get('username'))
-        print("Post", request.POST.get('password'))
-
         user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
 
-        print("result:", user)
         if user is None:
-            print("login Failed")
             return redirect('/accounts/login')
         else:
             ### Login Success
-            print("login Successed")
             auth_login(request, user)    
-            return redirect('/')
+            return redirect('/app')
 
     ### GET method 
     else:

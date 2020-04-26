@@ -35,7 +35,7 @@ def index(request):
 
 
 ### Show all Gateway from Redis 
-def gateways(request):
+def gateway_list(request):
 
     gateway = request.GET.get('gateway', None)
 
@@ -62,19 +62,9 @@ def gateways(request):
     return render(request, 'app/gateways.html', {'gt_dic':gt_dic})
 
 
-### Set Current Gateway
-def set_gateway(request):
-
-    cache.set("cur_gateway", request.GET.get('gt_name', None), timeout=None)
-
-    return HttpResponse(status=200)   
-
-
-
 
 @csrf_exempt
 def export_get_data(request):
-    print("export called")
     if request.method == "POST":
         j_data =request.body.decode('ascii')
         dict = json.loads(j_data)
@@ -137,54 +127,8 @@ def device_profile(request):
 
 
 
-class DeviceCommandAgency(APIView):
 
-    def get(self, request, format=None):
-
-        ### Parse the params for sending request to EdgeX
-        gateway = cache.get(cache.get("cur_gateway"))
-        device_id = request.query_params.get('device_id', None)
-        command_id = request.query_params.get('command_id', None)
-        URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id
-        
-        ### Request to EdgeX 
-        response = requests.get(URL)
-        res = json.loads(response.text)
-        ret_json= {}
-        for n in res['readings']:
-            ret_json[n['name']] = n['value']
-
-        ### Response to Browser via ajax 
-        return JsonResponse(ret_json)
-    
-
-    def post(self, request, format=None):
-
-        ### Parse the params for sending request to EdgeX
-        gateway = cache.get(cache.get("cur_gateway"))
-        device_id = request.data['device_id']
-        command_id = request.data['command_id']
-        URL = 'http://'+gateway+':48082/api/v1/device/'+device_id+'/command/'+command_id        
-
-        ### Parse Parameters
-        body = request.data['body']
-        print(body)
-        ### Request(PUT) to EdgeX 
-        headers = {'Content-Type': 'application/json'} 
-        response = requests.put(URL, headers=headers, data=body)
-        print(response)
-
-        if response.status_code == 200:
-            return Response()        
-        else:
-            return Response()
-
-        return HttpResponse(status=200)    
-
-
-
-def devices(request):
-    
+def device_list(request):
     gateway = cache.get(cache.get("cur_gateway"))
     URL = 'http://'+gateway+':48082/api/v1/device'
     response = requests.get(URL) 
@@ -276,47 +220,3 @@ def gentella_html(request):
     load_template = request.path.split('/')[-1]
     template = loader.get_template('app/' + load_template)
     return HttpResponse(template.render(context, request))
-
-
-def get_device_service(request):
-    gateway = cache.get(cache.get("cur_gateway"))
-    URL = 'http://'+gateway+':48081/api/v1/deviceservice'
-    response = requests.get(URL) 
-    res = json.loads(response.text) # type : list
-    
-    device_service_list =[]
-
-    for dev in res:
-        device_service_list.append(dev['name'])   
-    rtn_dic = {"name":device_service_list}
-    
-    return JsonResponse(rtn_dic)
-
-
-
-def get_device_profile(request):
-
-    ### Make URL for EdgeX connection
-    gateway = cache.get(cache.get("cur_gateway"))
-    URL = 'http://'+gateway+':48081/api/v1/deviceprofile'
-
-    ### Request to EdgeX 
-    response = requests.get(URL) 
-    res = json.loads(response.text)
-    
-    ### Parse Profile Info & Pass to Front 
-    device_profile_list =[]
-
-
-    for dev in res:
-        device_profile_list.append(dev['name'])   
-    
-    rtn_dic = {"name":device_profile_list}
-    
-
-    return JsonResponse(rtn_dic)
-
-
-def get_current_profile(request):
-    gateway = cache.get(cache.get("cur_gateway"))
-    return HttpResponse(gateway)

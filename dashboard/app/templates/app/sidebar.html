@@ -31,11 +31,11 @@
         </li>
         <li><a><i class="fa fa-edit"></i> Devices <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/gateways">Gateways</a></li>
-            <li><a href="/devices">Device List</a></li>
-            <li><a href="/devices/service">Device Service</a></li>
-            <li><a href="/devices/profile">Device Profile</a></li>
-            <li><a href="/devices/logs">Device Logs</a></li>
+            <li><a href="{% url 'app:gateway_list' %}">Gateways</a></li>
+            <li><a href="{% url 'app:device_list' %}">Device List</a></li>
+            <li><a href="{% url 'app:device_service' %}">Device Service</a></li>
+            <li><a href="{% url 'app:device_profile' %}">Device Profile</a></li>
+            <li><a href="{% url 'app:device_logs' %}">Device Logs</a></li>
           </ul>
         </li>
 
@@ -44,7 +44,7 @@
             <li><a href="{% url 'registeration:gateway' %}">Gateway</a></li>
             <li><a href="{% url 'registeration:device_profile' %}">Profile File</a></li>
             <li><a href="{% url 'registeration:device_itself' %}">Device</a></li>
-          </ul>
+            </ul>
         </li>
 
         <li><a><i class="fa fa-edit"></i> Edge Storage <span class="fa fa-chevron-down"></span></a>
@@ -61,9 +61,7 @@
 
         <li><a><i class="fa fa-edit"></i> Export <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'registeration:gateway' %}">Gateway</a></li>
-            <li><a href="{% url 'registeration:device_profile' %}">Profile File</a></li>
-            <li><a href="{% url 'registeration:device_itself' %}">Device</a></li>
+            <li><a href="{% url 'export:client_list' %}">Clients</a></li>
           </ul>
         </li>    
 

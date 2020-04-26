@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'app',
     'registeration',
     'storage',
+    'export',
     'rest_framework',
     'channels',
 
