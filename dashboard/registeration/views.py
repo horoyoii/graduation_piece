@@ -1,12 +1,14 @@
-from django.shortcuts import render
-from .forms import *
-from django.http import HttpResponseRedirect,HttpResponse
 import requests
-from django.core.cache import cache
-import os
 import json
 import copy
-# Create your views here.
+import os
+
+from django.http import HttpResponseRedirect,HttpResponse
+from django.core.cache import cache
+from django.shortcuts import render
+
+from .forms import *
+
 
 
 def gateway(request):

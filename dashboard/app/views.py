@@ -1,25 +1,24 @@
-from django.shortcuts import render
-from django.template import loader
-from django.http import HttpResponse, JsonResponse
+import channels.layers
 import requests
+import datetime
 import json
 import copy
 
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.template import loader
 from django.core.cache import cache
 
-# DRF
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from django.views.decorators.csrf import csrf_exempt
-from .forms import *
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-from django.views.decorators.csrf import csrf_exempt
-import channels.layers
-import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+
+from django.views.decorators.csrf import csrf_exempt
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+from .forms import *
 
 
 def index(request):

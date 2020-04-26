@@ -1,13 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.core.cache import cache
-import json
 import requests
+import json
 import copy
-from datetime import datetime
 import time
 
-# Create your views here.
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.core.cache import cache
+from datetime import datetime
+
 
 
 def device_list(request):
