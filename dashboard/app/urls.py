@@ -15,7 +15,7 @@ urlpatterns = [
     
     path('device/<device_id>', device_detail, name='device_detail'),
     path('device/register', device_register, name='device_register'),
-    path('export/data', export_get_data, name='get_data'),
+    #path('export/data', export_get_data, name='get_data'),
 
     # The home page
     path('', index, name='index'),

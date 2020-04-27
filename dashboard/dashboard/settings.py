@@ -26,12 +26,12 @@ INSTALLED_APPS = [
     'storage',
     'export',
     'rest_framework',
-    'channels',
+    #'channels',
 
 ]
 
 # Channels
-ASGI_APPLICATION = 'dashboard.routing.application'
+#ASGI_APPLICATION = 'dashboard.routing.application'
 
 CACHES = {  
     "default": {

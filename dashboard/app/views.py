@@ -1,4 +1,4 @@
-import channels.layers
+#import channels.layers
 import requests
 import datetime
 import json
@@ -15,8 +15,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
 from django.views.decorators.csrf import csrf_exempt
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+#from channels.layers import get_channel_layer
+#from asgiref.sync import async_to_sync
 
 from .forms import *
 
@@ -61,7 +61,7 @@ def gateway_list(request):
     return render(request, 'app/gateways.html', {'gt_dic':gt_dic})
 
 
-
+"""
 @csrf_exempt
 def export_get_data(request):
     if request.method == "POST":
@@ -88,7 +88,7 @@ def export_get_data(request):
         )
 
     return render(request, 'app/gateways.html', {'form': "hello world"})
-
+"""
 
 
 def device_logs(request):
