@@ -14,7 +14,7 @@ services:
         aliases:
           - web-server  
     volumes:
-      - ./dashboard/uploads:/app/dashboard/uploads
+      - ./dashboard:/app/dashboard
     depends_on:
       - redis
 

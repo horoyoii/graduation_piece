@@ -4,7 +4,7 @@ import copy
 import time
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.cache import cache
 from datetime import datetime
 
@@ -12,6 +12,9 @@ from datetime import datetime
 
 def device_list(request):
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')
+
     URL = 'http://'+gateway+':48082/api/v1/device'
     response = requests.get(URL) 
     print(response.status_code) 
@@ -36,6 +39,9 @@ def device_detail(request, device_id):
     First request to edgeX is for get the list of device resources.
     """
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')
+
     URL = 'http://'+gateway+':48082/api/v1/device/'+device_id
 
     response = requests.get(URL) 

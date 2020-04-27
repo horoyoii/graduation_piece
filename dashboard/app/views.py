@@ -100,6 +100,8 @@ def device_profile(request):
 
     ### Make URL for EdgeX connection
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')
     URL = 'http://'+gateway+':48081/api/v1/deviceprofile'
 
     ### Request to EdgeX 
@@ -129,6 +131,8 @@ def device_profile(request):
 
 def device_list(request):
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')    
     URL = 'http://'+gateway+':48082/api/v1/device'
     response = requests.get(URL) 
     print(response.status_code) 
@@ -150,8 +154,9 @@ def device_list(request):
 
 
 def device_services(request):
-
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')       
     URL = 'http://'+gateway+':48081/api/v1/deviceservice'
     response = requests.get(URL) 
     res = json.loads(response.text) # type : list
@@ -173,6 +178,9 @@ def device_services(request):
 
 def device_detail(request, device_id):
     gateway = cache.get(cache.get("cur_gateway"))
+    if gateway == None:
+        return redirect('/registeration/gateway')          
+    
     URL = 'http://'+gateway+':48082/api/v1/device/'+device_id
 
     response = requests.get(URL) 
