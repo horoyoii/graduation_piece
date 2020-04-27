@@ -5,6 +5,29 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: edgex-dashboard
     command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - "8090:8000"  
+      - "8090:8000"
+    networks:
+      dash-network:
+        aliases:
+          - web-server  
+    volumes:
+      - ./dashboard/uploads:/app/dashboard/uploads
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis"
+    container_name: edgex-redis
+    expose:
+      - "6379"
+    networks:
+      dash-network:
+        aliases:
+          - redis
+      
+networks:
+  dash-network:
+    driver: "bridge"   

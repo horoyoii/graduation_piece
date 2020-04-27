@@ -2,4 +2,3 @@ Django==2.2.10
 django-redis==4.10.0
 djangorestframework==3.9.3
 requests==2.21.0
-channels==2.2.0
