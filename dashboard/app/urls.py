@@ -4,7 +4,7 @@ from .views import *
 app_name = 'app'
 
 urlpatterns = [
-
+    
     path('gateway/', gateway_list, name='gateway_list'),
     
     path('device/',  device_list, name='device_list'),

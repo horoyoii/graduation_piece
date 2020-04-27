@@ -48,7 +48,7 @@
 
             <div class="x_content">
 
-              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>
+              <p>Select <code>edgeX server</code></p>
 
               <div class="table-responsive">
                 <table class="table table-striped jambo_table bulk_action">
@@ -68,10 +68,10 @@
                     {% for k, v in gt_dic.items %}
                       <tr class="even pointer">
                         <td class=" ">{{k}}</td>
-                        <td class=" ">home-room-1</td>
-                        <td class=" ">home room</td>
+                        <td class=" ">EdgeX Gateway</td>
+                        <td class=" ">None</td>
                         <td class=" ">{{v}}</td>
-                        <td class=" "><button type="button" class="btn btn-default" value="{{k}}">Set</button></td>
+                        <td class=" "><button type="button" class="btn btn-default" ip="{{v}}" value="{{k}}">Set</button></td>
                       </tr>
                     {% endfor %}
 
@@ -95,6 +95,7 @@
   
   <script>
     $('.btn').click(function(){
+      var ip = $(this).attr("ip")
 
       $.ajax({
         url:'/api/v1/gateway',
@@ -102,7 +103,7 @@
               gt_name:$(this).attr('value')    
         }, 
         success:function(data){
-
+          $('#cur_gt').text("Current Gateway : "+ ip);   
         },
         error:function(e){  
           alert(e.responseText);  
