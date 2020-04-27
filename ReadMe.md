@@ -1,5 +1,9 @@
 # [Admin DashBorad For EdgeX Foundry](https://github.com/horoyoii/admin_dashboard_edgex)
 
+## System  
+![image](https://user-images.githubusercontent.com/34915108/80410151-16e26900-8905-11ea-931d-883d9f99f138.png)  
+
+ 
 ## Admin Dashborad 
 
  This web project is for managing the EdgeX's microservices via the gateway based on Django.
