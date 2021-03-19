@@ -1,4 +1,4 @@
 Django==2.2.10
 django-redis==4.10.0
-djangorestframework==3.9.3
+djangorestframework==3.11.2
 requests==2.21.0
